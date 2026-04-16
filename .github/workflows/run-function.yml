@@ -1,0 +1,17 @@
+name: Run Edge Function Every 30 Min
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: # allows manual trigger (important for testing)
+
+jobs:
+  call-function:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Supabase Edge Function
+        run: |
+          curl -X POST https://rhtrzaqvcxtiiokxzxys.supabase.co/functions/v1/products_pull \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+          -H "Content-Type: application/json"
